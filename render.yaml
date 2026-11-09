@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: saloni-tiwari-portfolio-v4
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --workers 2 --threads 4 --timeout 60 app:app
+    healthCheckPath: /health
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ADMIN_USERNAME
+        value: saloni
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: COOKIE_SECURE
+        value: "1"
+      - key: DATA_DIR
+        value: /var/data
+      - key: UPLOAD_DIR
+        value: /var/data/uploads
+    disk:
+      name: portfolio-data
+      mountPath: /var/data
+      sizeGB: 1
